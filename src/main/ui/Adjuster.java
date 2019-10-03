@@ -4,59 +4,16 @@ import application.Course;
 import application.User;
 
 import javax.swing.*;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 import static java.lang.System.exit;
 
 public class Adjuster {
-
-
-
-    //REQUIRES: User inputs have to be logical and error-free
-    //MODIFIES: User instance.
-    //EFFECTS: Instantiates new user if user does not exist. Since there are no means to save user info yet, must be
-    //         run every instance.
-    public static User newUser(List<String> lines, PrintWriter writer) {
-
-        String courseName;
-        int numCourses;
-        int credits;
-        User user;
-
-        JFrame frame = new JFrame();
-        frame.setSize(300, 400);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        user = new User(JOptionPane.showInputDialog(frame, "Hello! What's your name? "));
-        writer.println(user.getName());
-
-        // https://stackoverflow.com/questions/7080205/popup-message-boxes
-        JOptionPane.showMessageDialog(frame, "Hello " + user.getName(), "StudyTrack",
-                JOptionPane.INFORMATION_MESSAGE);
-
-        // https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html
-        Object[] possibilities = {1, 2, 3, 4, 5, 6, 7};
-        numCourses = (int)JOptionPane.showInputDialog(frame, "How many courses are you taking?",
-                "StudyTrack", JOptionPane.QUESTION_MESSAGE, null, possibilities, 3);
-
-        for (int i = 0; i < numCourses; i++) {
-            courseName = JOptionPane.showInputDialog(frame, "What's the name of the " + (i + 1) + " course?");
-            Object[] possibleCredits = {1, 2, 3, 4, 5, 6};
-            credits = (int)JOptionPane.showInputDialog(frame, "How many credits is " + courseName + "?",
-                    "StudyTrack", JOptionPane.QUESTION_MESSAGE, null, possibleCredits, 3);
-            user.addCourse(new Course(courseName, credits));
-            //writer.println(courseName + " " + credits);
-        }
-        return user;
-    }
 
     /**
      * Question: Does the main method have to follow 20-line maximum requirement?
@@ -65,79 +22,149 @@ public class Adjuster {
      */
     public static void main(String[] args) {
 
-        List<String> lines = null;
+        User user = setUpUser();
+
+        user.setCourseList(addHoursAndGrades(user.getCourseList()));
+
+        saveUserData(user);
+
+        exit(0);
+    }
+
+    private static void saveUserData(User user) {
         PrintWriter writer = null;
+        //final String USER_FILE = ".data\\userInfo.txt";
 
-        try {
-            lines = Files.readAllLines(Paths.get("userInfo.txt"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        JFileChooser chooser = new JFileChooser();
+        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 
-        try {
-            writer = new PrintWriter("userInfo.txt","UTF-8");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        User user = new User("dickhead");
-
-        // http://www.java2s.com/Tutorial/Java/0240__Swing/Modaldialogwithyesnobutton.htm
-        JFrame frame = new JFrame();
-        frame.setSize(300, 400);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        String message = "Are you a new user?";
-        int answer = JOptionPane.showConfirmDialog(frame, message);
-        if (answer == JOptionPane.YES_OPTION) {
-            user = newUser(lines, writer);
-        } else if (answer == JOptionPane.NO_OPTION) {
-            if (lines.get(0) == null) {
-                JOptionPane.showMessageDialog(frame, "No user found! \nCreating new user.", "StudyTrack",
-                        JOptionPane.WARNING_MESSAGE);
-                user = newUser(lines, writer);
-            } else {
-                user = new User(lines.get(0));
-                ArrayList<Course> courseList = new ArrayList<>();
-                for (int i = 1; i < lines.size(); i++) {
-                    ArrayList<String> partsOfLine = splitOnBar(lines.get(i));
-                    courseList.add(new Course(partsOfLine.get(0), Integer.parseInt(partsOfLine.get(1)),
-                            Double.parseDouble(partsOfLine.get(2)), Double.parseDouble(partsOfLine.get(3)),
-                            Double.parseDouble(partsOfLine.get(4))));
-                }
-                user.setCourseList(courseList);
+            File selectedFile = chooser.getSelectedFile();
+            try {
+                writer = new PrintWriter(selectedFile,"UTF-8");
+            } catch (FileNotFoundException | UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
-             //TO-DO: change this
-        } else {
-            exit(1);
-
         }
 
-        user = modifyCourses(user);
+        assert writer != null;
+        writer.println(user.getName());
+
 
         for (int i = 0; i < user.getCourseList().size(); i++) {
             writer.println(user.getCourseList().get(i).toString());
         }
 
-        exit(0);
+        writer.close();
     }
 
-    public static User modifyCourses(User user) {
+    private static User setUpUser() {
 
-        ArrayList<Course> courseList = user.getCourseList();
+        User user = null;
 
+        // http://www.java2s.com/Tutorial/Java/0240__Swing/Modaldialogwithyesnobutton.htm
+        JFrame frame = frameSetUp();
+
+        int answer = JOptionPane.showConfirmDialog(frame, "Are you a new user?");
+        if (answer == JOptionPane.YES_OPTION) {
+
+            user = newUser();
+        } else if (answer == JOptionPane.NO_OPTION) {
+
+            List<String> lines = linesSetup();
+            if (lines.size() == 0) {
+
+                JOptionPane.showMessageDialog(frame, "No user found! \nCreating new user.", "StudyTrack",
+                        JOptionPane.WARNING_MESSAGE);
+                user = newUser();
+            } else {
+                user = loadUserData(lines);
+            }
+        } else {
+            exit(1);
+        }
+        return user;
+    }
+
+    private static List<String> linesSetup() {
+
+        List<String> lines = new ArrayList<>();
+
+        JFileChooser chooser = new JFileChooser();
+
+        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+
+            File selectedFile = chooser.getSelectedFile();
+
+            try {
+                lines = Files.readAllLines(Paths.get(selectedFile.getAbsolutePath()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return lines;
+    }
+
+    private static JFrame frameSetUp() {
         JFrame frame = new JFrame();
         frame.setSize(300, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        return frame;
+    }
 
-        for (int i = 0; i < user.getCourseList().size(); i++) {
+    //REQUIRES: User inputs have to be logical and error-free
+    //MODIFIES: User instance.
+    //EFFECTS: Instantiates new user if user does not exist. Since there are no means to save user info yet, must be
+    //         run every instance.
+    private static User newUser() {
+
+        JFrame frame = frameSetUp();
+        User user = new User(JOptionPane.showInputDialog(frame, "Hello! What's your name? "));
+
+
+        // https://stackoverflow.com/questions/7080205/popup-message-boxes
+        JOptionPane.showMessageDialog(frame, "Hello " + user.getName(), "StudyTrack",
+                JOptionPane.INFORMATION_MESSAGE);
+
+        // https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html
+        Object[] possibilities = {1, 2, 3, 4, 5, 6, 7};
+        int numCourses = (int)JOptionPane.showInputDialog(frame, "How many courses are you taking?",
+                "StudyTrack", JOptionPane.QUESTION_MESSAGE, null, possibilities, 3);
+
+        for (int i = 0; i < numCourses; i++) {
+            String courseName = JOptionPane.showInputDialog(frame, "What's the name of course #" + (i + 1) + "?");
+            Object[] possibleCredits = {1, 2, 3, 4, 5, 6};
+            int credits = (int)JOptionPane.showInputDialog(frame, "How many credits is " + courseName + "?",
+                    "StudyTrack", JOptionPane.QUESTION_MESSAGE, null, possibleCredits, 3);
+            user.addCourse(new Course(courseName, credits));
+        }
+        return user;
+    }
+
+    private static User loadUserData(List<String> lines) {
+        User user = new User(lines.get(0));
+        ArrayList<Course> courseList = new ArrayList<>();
+        for (int i = 1; i < lines.size(); i++) {
+            ArrayList<String> partsOfLine = splitOnColon(lines.get(i));
+            courseList.add(new Course(partsOfLine.get(0), Integer.parseInt(partsOfLine.get(1)),
+                    Double.parseDouble(partsOfLine.get(2)), Double.parseDouble(partsOfLine.get(3)),
+                    Double.parseDouble(partsOfLine.get(4))));
+        }
+        user.setCourseList(courseList);
+        return user;
+    }
+
+    private static ArrayList<Course> addHoursAndGrades(ArrayList<Course> courseList) {
+        JFrame frame = frameSetUp();
+
+        for (Course course : courseList) {
 
             double h = Double.parseDouble(JOptionPane.showInputDialog(frame, "How many hours did you study "
-                    + courseList.get(i).getCourseName() + " today?"));
+                    + course.getCourseName() + " today?"));
 
-            courseList.get(i).addHours(h);
-            String message = "Do you have grades to add to " + courseList.get(i).getCourseName() + " today?(Y/N)";
+            course.addHours(h);
+            String message = "Do you have grades to add to " + course.getCourseName() + " today?(Y/N)";
 
             int answer = JOptionPane.showConfirmDialog(frame, message);
             if (answer == JOptionPane.YES_OPTION) {
@@ -148,21 +175,17 @@ public class Adjuster {
                         "What score constituted a 100 for the item?"));
                 double score = Double.parseDouble(JOptionPane.showInputDialog(frame,
                         "What score did you earn?"));
-                courseList.get(i).addGrades(score, max, val);
-
+                course.addGrades(score, max, val);
 
             }
-
         }
-        user.setCourseList(courseList);
-        return user;
+        return courseList;
     }
 
     // Taken from FileReaderWriter project given
-    public static ArrayList<String> splitOnBar(String line) {
-        String[] splits = line.split("|");
+    private static ArrayList<String> splitOnColon(String line) {
+        String[] splits = line.split(":");
         return new ArrayList<>(Arrays.asList(splits));
     }
-
 
 }

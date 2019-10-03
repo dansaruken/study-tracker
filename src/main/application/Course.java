@@ -86,6 +86,6 @@ public class Course {
     }
 
     public String toString() {
-        return courseName + "|" + credits  + "|" + hours  + "|" + marksEarned  + "|" + gradeRemaining;
+        return courseName + ":" + credits  + ":" + hours  + ":" + marksEarned  + ":" + gradeRemaining;
     }
 }

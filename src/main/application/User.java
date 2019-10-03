@@ -2,7 +2,7 @@ package application;
 
 import java.util.ArrayList;
 
-public class User {
+public class User implements Writeable, Named {
     private static String name;
 
     private ArrayList<Course> courseList;
@@ -10,7 +10,7 @@ public class User {
     //EFFECTS: Creates new User instance
     public User(String name) {
         User.name = name;
-        courseList = new ArrayList<Course>();
+        courseList = new ArrayList<>();
     }
 
     //EFFECTS: Returns username
@@ -31,6 +31,15 @@ public class User {
     //EFFECTS: Adds course to user's courselist
     public void addCourse(Course course) {
         courseList.add(course);
+    }
+
+    public String toString() {
+        StringBuilder s = new StringBuilder(name);
+        for (Course c : courseList) {
+            s.append("\n");
+            s.append(c.toString());
+        }
+        return s.toString();
     }
 
 
