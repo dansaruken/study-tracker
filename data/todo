@@ -1,0 +1,13 @@
+1. Add calendar with due dates to Course, add function to store upcoming tests/assignments with their values
+    a. send reminders to User three/four days before due
+        b. variable reminder, depending on value of item?
+    b. Create master calendar on User.
+    c. Use ArrayList of Assignment/Test object? -> 2
+        i. or; use
+
+2. Add new class for Tests and/or Assignments
+    a. One class or two?
+    b. Idea: Ask how user felt about it after submission
+    c. Ask user every one week if item has been graded.
+        i. if yes, remind them how they felt about it, compare to grade earned, and hours studied
+
