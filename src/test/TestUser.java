@@ -2,10 +2,8 @@ import application.Course;
 
 import application.Named;
 import application.User;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-//import org.junit.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TestUser {
