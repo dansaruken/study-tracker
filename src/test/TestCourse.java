@@ -1,26 +1,27 @@
 import application.Course;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+//import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestCourse {
+class TestCourse {
 
     @Test
-    public void testBasicConstructor() {
+    void testBasicConstructor() {
         Course course = new Course("Linguistics");
         assertEquals(3, course.getCredits());
         assertEquals("Linguistics", course.getCourseName());
     }
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         Course course = new Course("Models of Computation", 4);
         assertEquals(4, course.getCredits());
         assertEquals("Models of Computation", course.getCourseName());
     }
 
     @Test
-    public void testGradeMethods() {
+    void testGradeMethods() {
         Course course = new Course("Models of Computation", 4);
         course.addGrades(5, 5, 1);
         assertEquals(1, course.getCurrentGrade());
@@ -38,7 +39,7 @@ public class TestCourse {
     }
 
     @Test
-    public void testHourMethods() {
+    void testHourMethods() {
         Course course = new Course("Models of Computation", 4);
         course.addHours(6);
         assertEquals(6, course.getHours());

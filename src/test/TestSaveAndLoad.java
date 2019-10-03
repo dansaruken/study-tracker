@@ -1,6 +1,7 @@
 import application.Course;
 import application.User;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+//import org.junit.Test;
 
 import javax.swing.*;
 import java.io.*;
@@ -14,7 +15,7 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class TestSaveAndLoad {
+class TestSaveAndLoad {
 
     private User Dan;
 
@@ -85,7 +86,7 @@ public class TestSaveAndLoad {
     }
 
     @Test
-    public void testSave() {
+    void testSave() {
         Dan = new User("Daniel");
         Course course = new Course("Models of Computation", 4);
         course.addGrades(5, 5, 1);
@@ -103,7 +104,7 @@ public class TestSaveAndLoad {
     }
 
     @Test
-    public void testLoad() {
+    void testLoad() {
         File f = new File("C:\\Users\\dansaruken\\Documents\\CPSC210\\project_g8w2b\\data\\testUserInfo.txt");
         assertTrue(f.exists());
         assertFalse(f.isDirectory());
