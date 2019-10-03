@@ -2,26 +2,23 @@ import application.Course;
 
 import application.Named;
 import application.User;
-import java.util.Scanner;
 import org.junit.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestUser {
 
-    User Dan;
-    Scanner in;
+    private User Dan;
 
     @Before
     public void setUp() {
         Dan = new User("Daniel");
         Dan.addCourse(new Course("Software Construction", 4));
-        in = new Scanner(System.in);
     }
 
     @Test
     public void testName() {
         assertEquals("Daniel", Dan.getName());
-        /** NOTE: Here is a declared Interface */
+        /* NOTE: Here is a declared Interface */
         Named Danimal = new User("The Danimal");
         assertEquals("The Danimal", Danimal.getName());
     }

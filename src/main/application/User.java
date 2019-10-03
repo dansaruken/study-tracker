@@ -18,9 +18,9 @@ public class User implements Writeable, Named {
         return name;
     }
 
-    //EFFECTS: Returns clone of course list.
+    //EFFECTS: Returns course list.
     public ArrayList<Course> getCourseList() {
-        return (ArrayList<Course>) courseList.clone();
+        return courseList; //should I give a copy instead? Is this safe?
     }
 
     public void setCourseList(ArrayList<Course> courses) {
@@ -28,7 +28,7 @@ public class User implements Writeable, Named {
     }
 
     //MODIFIES: this.
-    //EFFECTS: Adds course to user's courselist
+    //EFFECTS: Adds course to user's courseList
     public void addCourse(Course course) {
         courseList.add(course);
     }
