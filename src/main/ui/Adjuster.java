@@ -174,7 +174,7 @@ public class Adjuster {
             int answer = JOptionPane.showConfirmDialog(frame, message);
             if (answer == YES_OPTION) {
                 //
-                course = addItem(course);
+                course = adjustGrades(course);
                 //
             }
         }
@@ -211,23 +211,23 @@ public class Adjuster {
 
     }
 
-    private static Course addItem(Course course) {
-        {
-            Item item;
-            boolean assignment = true;
-            Object[] options = {"Assignment", "Test"};
-            int n = JOptionPane.showOptionDialog(null, "Test or Assignment?", "StudyTracker",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-            if (n == NO_OPTION) {
-                assignment = false;
-            }
-            item = getItem(course, assignment);
+    private static Course adjustGrades(Course course) {
 
-            course.addItem(item);
-
-            return course;
-
+        Item item;
+        boolean assignment = true;
+        Object[] options = {"Assignment", "Test"};
+        int n = JOptionPane.showOptionDialog(null, "Test or Assignment?", "StudyTracker",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        if (n == NO_OPTION) {
+            assignment = false;
         }
+        item = getItem(course, assignment);
+
+        course.addItem(item);
+
+        return course;
+
+
     }
 
     private static Item getItem(Course course, boolean assignment) {
@@ -246,7 +246,7 @@ public class Adjuster {
         if (assignment) {
             item = new Assignment(itemName, val, max, score, itemDate);
         } else {
-            item = new Test(itemName, val, max, score, itemDate);
+            item = new Midterm(itemName, val, max, score, itemDate);
         }
         return item;
     }

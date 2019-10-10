@@ -1,5 +1,6 @@
 package application;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +15,7 @@ public class Course {
     private double hours = 0;
     private double marksEarned = 0;
     private double gradeRemaining = 100;
-    private ArrayList<Item> testsAndAssignments;
+    private ArrayList<Item> testsAndAssignments = new ArrayList<>();
 
     //REQUIRES: title cannot contain spaces due to Scanner problems, hope to resolve.
     //EFFECTS: Creates new instance of a Course, with a default number of credits

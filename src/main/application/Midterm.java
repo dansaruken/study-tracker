@@ -3,12 +3,12 @@ package application;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Test extends Item {
+public class Midterm extends Item {
 
 
     private ArrayList<Topic> topicList;
 
-    public Test(String name, double value, double maxScore, double scoreEarned, LocalDate date) {
+    public Midterm(String name, double value, double maxScore, double scoreEarned, LocalDate date) {
         title = name;
         this.value = value;
         this.maxScore = maxScore;

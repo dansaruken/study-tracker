@@ -12,6 +12,29 @@ public abstract class Item {
     protected String thoughtsFeelings;
     protected LocalDate date;
 
+    public String getTitle() {
+        return title;
+    }
+
+    public double getValue() {
+        return value;
+    }
+
+    public double getMaxScore() {
+        return maxScore;
+    }
+
+    public double getScoreEarned() {
+        return scoreEarned;
+    }
+
+    public String getThoughtsFeelings() {
+        return thoughtsFeelings;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
 
     public void setTitle(String title) {
         this.title = title;
