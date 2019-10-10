@@ -43,6 +43,10 @@ public class TestItem {
         midtermItem.setScoreEarned(69);
         midtermItem.setValue(45);
 
+        LocalDate date = LocalDate.of(2019,10,9);
+        midtermItem.setDate(date);
+        assertEquals(date, midtermItem.getDate());
+
         assertEquals("Test Two", midtermItem.getTitle());
         assertEquals(45, midtermItem.getValue());
         assertEquals(99, midtermItem.getMaxScore());

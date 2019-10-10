@@ -62,9 +62,11 @@ public abstract class Item {
         this.date = date;
     }
 
+    /*
     public boolean graded() {
         return scoreEarned >= 0;
     }
+     */
 
     abstract void setReminder(int days);
 

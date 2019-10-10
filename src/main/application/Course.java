@@ -85,9 +85,11 @@ public class Course {
     }
 
     //EFFECTS: Prints course name and credits
+    /*
     public void print() {
         System.out.println(courseName + ", " + credits + " credits. ");
     }
+     */
 
     public String toString() {
         return courseName + ":" + credits  + ":" + hours  + ":" + marksEarned  + ":" + gradeRemaining;

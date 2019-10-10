@@ -1,6 +1,11 @@
+import application.Assignment;
 import application.Course;
+import application.Item;
+import application.Midterm;
 import org.junit.jupiter.api.Test;
 //import org.junit.Test;
+
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,6 +23,11 @@ class TestCourse {
         Course course = new Course("Models of Computation", 4);
         assertEquals(4, course.getCredits());
         assertEquals("Models of Computation", course.getCourseName());
+        Course otherCourse = new Course("Software Construction", 4, 60, 90,0);
+        assertEquals(0.9, otherCourse.getCurrentGrade());
+        assertEquals(0, otherCourse.getGradeRemaining());
+        assertEquals(60,otherCourse.getHours());
+        assertEquals(4, otherCourse.getCredits());
     }
 
     @Test
@@ -29,6 +39,10 @@ class TestCourse {
         course.addGrades(0, 5, 9);
         assertEquals(0.1, course.getCurrentGrade());
         assertEquals(90, course.getGradeRemaining());
+
+        Item midtermItem = new Midterm("testOne", 20, 50, 25, LocalDate.now());
+        course.addItem(midtermItem);
+        // Add course getItem
 
         Course course2 = new Course("Software Construction", 4);
         assertEquals(100, course2.getGradeRemaining());
