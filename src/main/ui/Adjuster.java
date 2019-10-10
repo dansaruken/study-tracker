@@ -221,28 +221,34 @@ public class Adjuster {
             if (n == NO_OPTION) {
                 assignment = false;
             }
-            String itemName = JOptionPane.showInputDialog(null,
-                    "Give this item a name (like Test 1, Assignment 2, etc");
-            LocalDate itemDate = calendarDialogue();
-            double val = Double.parseDouble(JOptionPane.showInputDialog(null,
-                    "What was the item worth(1 - 100 out of final grade)?"));
-            double max = Double.parseDouble(JOptionPane.showInputDialog(null,
-                    "What score constituted a 100 for the item?"));
-            double score = Double.parseDouble(JOptionPane.showInputDialog(null,
-                    "What score did you earn?"));
-            course.addGrades(score, max, val);
-
-            if (assignment) {
-                item = new Assignment(itemName, val, max, score, itemDate);
-            } else {
-                item = new Test(itemName, val, max, score, itemDate);
-            }
+            item = getItem(course, assignment);
 
             course.addItem(item);
 
             return course;
 
         }
+    }
+
+    private static Item getItem(Course course, boolean assignment) {
+        Item item;
+        String itemName = JOptionPane.showInputDialog(null,
+                "Give this item a name (like Test 1, Assignment 2, etc");
+        LocalDate itemDate = calendarDialogue();
+        double val = Double.parseDouble(JOptionPane.showInputDialog(null,
+                "What was the item worth(1 - 100 out of final grade)?"));
+        double max = Double.parseDouble(JOptionPane.showInputDialog(null,
+                "What score constituted a 100 for the item?"));
+        double score = Double.parseDouble(JOptionPane.showInputDialog(null,
+                "What score did you earn?"));
+        course.addGrades(score, max, val);
+
+        if (assignment) {
+            item = new Assignment(itemName, val, max, score, itemDate);
+        } else {
+            item = new Test(itemName, val, max, score, itemDate);
+        }
+        return item;
     }
 
 
