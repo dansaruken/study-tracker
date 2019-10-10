@@ -28,9 +28,11 @@ public abstract class Item {
         return scoreEarned;
     }
 
+    /*
     public String getThoughtsFeelings() {
         return thoughtsFeelings;
     }
+     */
 
     public LocalDate getDate() {
         return date;

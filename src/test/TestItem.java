@@ -25,7 +25,28 @@ public class TestItem {
     @Test
     void testItems() {
         assertEquals("testOne", midtermItem.getTitle());
+        assertEquals("assignmentOne", assignment.getTitle());
+        assertEquals(20, midtermItem.getValue());
+        assertEquals(50, midtermItem.getMaxScore());
+        assertEquals(25, midtermItem.getScoreEarned());
+        assertEquals(LocalDate.now(), midtermItem.getDate());
+        assertEquals(6, assignment.getValue());
+        assertEquals(10, assignment.getMaxScore());
+        assertEquals(8, assignment.getScoreEarned());
+        assertEquals(LocalDate.now(), assignment.getDate());
+    }
 
+    @Test
+    void testSetters() {
+        midtermItem.setTitle("Test Two");
+        midtermItem.setMaxScore(99);
+        midtermItem.setScoreEarned(69);
+        midtermItem.setValue(45);
+
+        assertEquals("Test Two", midtermItem.getTitle());
+        assertEquals(45, midtermItem.getValue());
+        assertEquals(99, midtermItem.getMaxScore());
+        assertEquals(69, midtermItem.getScoreEarned());
     }
 
 }

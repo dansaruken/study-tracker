@@ -13,8 +13,10 @@ public class Assignment extends Item {
     }
 
     @Override
-    void setReminder(int days) {
-
+    public void setReminder(int days) {
+        System.out.println("Your assignment is due in " + days + " days. Are you ready for it?");
+        System.out.println("TODO: Add dialogue to set reminders, add ui checks on startup to check for reminders");
+        System.out.println("TODO: Assignment Specific: Progress checklist, % finished, etc.");
 
     }
 }
