@@ -1,17 +1,21 @@
 package ui;
 
-import application.Course;
-import application.User;
+import application.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static java.lang.System.exit;
+import static javax.swing.JOptionPane.NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
 
 public class Adjuster {
 
@@ -65,10 +69,10 @@ public class Adjuster {
         JFrame frame = frameSetUp();
 
         int answer = JOptionPane.showConfirmDialog(frame, "Are you a new user?");
-        if (answer == JOptionPane.YES_OPTION) {
+        if (answer == YES_OPTION) {
 
             user = newUser();
-        } else if (answer == JOptionPane.NO_OPTION) {
+        } else if (answer == NO_OPTION) {
 
             List<String> lines = linesSetup();
             if (lines.size() == 0) {
@@ -164,19 +168,14 @@ public class Adjuster {
                     + course.getCourseName() + " today?"));
 
             course.addHours(h);
-            String message = "Do you have grades to add to " + course.getCourseName() + " today?(Y/N)";
+            String message = "Do you have a graded test or assignment to add to " + course.getCourseName()
+                    + " today?(Y/N)";
 
             int answer = JOptionPane.showConfirmDialog(frame, message);
-            if (answer == JOptionPane.YES_OPTION) {
-
-                double val = Double.parseDouble(JOptionPane.showInputDialog(frame,
-                        "What was the item worth(1 - 100 out of final grade)?"));
-                double max = Double.parseDouble(JOptionPane.showInputDialog(frame,
-                        "What score constituted a 100 for the item?"));
-                double score = Double.parseDouble(JOptionPane.showInputDialog(frame,
-                        "What score did you earn?"));
-                course.addGrades(score, max, val);
-
+            if (answer == YES_OPTION) {
+                //
+                course = addItem(course);
+                //
             }
         }
         return courseList;
@@ -187,5 +186,64 @@ public class Adjuster {
         String[] splits = line.split(":");
         return new ArrayList<>(Arrays.asList(splits));
     }
+
+    // https://stackoverflow.com/questions/21737071/java-can-you-get-multiple-variables-using-one-joptionpane-message
+    private static LocalDate calendarDialogue() {
+        Object[] months = {1,2,3,4,5,6,7,8,9,10,11,12};
+        Object[] days = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
+        JComboBox<Object> monthSelect = new JComboBox<>(months);
+        JComboBox<Object> daySelect = new JComboBox<>(days);
+
+        JPanel myPanel = new JPanel();
+        myPanel.setLayout(new GridLayout(2,1));
+        myPanel.add(new JLabel("Month:"));
+        myPanel.add(monthSelect);
+        myPanel.add(new JLabel("Day:"));
+        myPanel.add(daySelect);
+
+        int result = JOptionPane.showConfirmDialog(null, myPanel,
+                "When is this due?", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            return LocalDate.of(Year.now().getValue(), (int)monthSelect.getSelectedItem(),
+                    (int)daySelect.getSelectedItem());
+        }
+        return LocalDate.now();
+
+    }
+
+    private static Course addItem(Course course) {
+        {
+            Item item;
+            boolean assignment = true;
+            Object[] options = {"Assignment", "Test"};
+            int n = JOptionPane.showOptionDialog(null, "Test or Assignment?", "StudyTracker",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (n == NO_OPTION) {
+                assignment = false;
+            }
+            String itemName = JOptionPane.showInputDialog(null,
+                    "Give this item a name (like Test 1, Assignment 2, etc");
+            LocalDate itemDate = calendarDialogue();
+            double val = Double.parseDouble(JOptionPane.showInputDialog(null,
+                    "What was the item worth(1 - 100 out of final grade)?"));
+            double max = Double.parseDouble(JOptionPane.showInputDialog(null,
+                    "What score constituted a 100 for the item?"));
+            double score = Double.parseDouble(JOptionPane.showInputDialog(null,
+                    "What score did you earn?"));
+            course.addGrades(score, max, val);
+
+            if (assignment) {
+                item = new Assignment(itemName, val, max, score, itemDate);
+            } else {
+                item = new Test(itemName, val, max, score, itemDate);
+            }
+
+            course.addItem(item);
+
+            return course;
+
+        }
+    }
+
 
 }

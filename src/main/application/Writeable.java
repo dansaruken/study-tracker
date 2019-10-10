@@ -2,6 +2,6 @@ package application;
 
 public interface Writeable {
 
-    public String toString();
+    String toString();
 
 }

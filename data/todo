@@ -1,3 +1,5 @@
+Note of interest: Ctrl+Q to see Java Documentation
+
 1. Add calendar with due dates to Course, add function to store upcoming tests/assignments with their values
     a. send reminders to User three/four days before due
         b. variable reminder, depending on value of item?
@@ -6,7 +8,7 @@
         i. or; use
 
 2. Add new class for Tests and/or Assignments
-    a. One class or two?
+    a. One class or two? ONE ABSTRACT: ITEM. Test extends Item, Assignment extends Item
     b. Idea: Ask how user felt about it after submission
     c. Ask user every one week if item has been graded.
         i. if yes, remind them how they felt about it, compare to grade earned, and hours studied

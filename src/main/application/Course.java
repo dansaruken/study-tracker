@@ -1,5 +1,7 @@
 package application;
 
+import java.util.ArrayList;
+
 /**
  * CHANGELOG: Shifted "currentGrade" which was supposed to be a percentage (between 0 and 1), to "marksEarned",
  * a private variable that represents number of percentage 'points' as a number between 0 and 100.
@@ -12,6 +14,7 @@ public class Course {
     private double hours = 0;
     private double marksEarned = 0;
     private double gradeRemaining = 100;
+    private ArrayList<Item> testsAndAssignments;
 
     //REQUIRES: title cannot contain spaces due to Scanner problems, hope to resolve.
     //EFFECTS: Creates new instance of a Course, with a default number of credits
@@ -87,5 +90,9 @@ public class Course {
 
     public String toString() {
         return courseName + ":" + credits  + ":" + hours  + ":" + marksEarned  + ":" + gradeRemaining;
+    }
+
+    public void addItem(Item item) {
+        testsAndAssignments.add(item);
     }
 }
