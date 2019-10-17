@@ -77,9 +77,12 @@ public class Course {
     //          grade remaining.
     //MODIFIES: this
     //EFFECTS: Adds an item's grade to the course
-    public void addGrades(double score, double maxScore, double percentMax) {
+    public void addGrades(double score, double maxScore, double percentMax) throws GradeExceededException {
         marksEarned += score / maxScore * percentMax;
         gradeRemaining -= percentMax;
+        if (gradeRemaining < 0) {
+            throw new GradeExceededException();
+        }
         System.out.println("Current grade is " + marksEarned + " out of "
                 + (100 - gradeRemaining) + " or " + marksEarned / (100 - gradeRemaining));
     }

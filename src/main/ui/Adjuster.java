@@ -19,6 +19,8 @@ import static javax.swing.JOptionPane.YES_OPTION;
 
 public class Adjuster {
 
+
+
     /**
      * Question: Does the main method have to follow 20-line maximum requirement?
      * ANSWER: YES, NO EXCEPTIONS
@@ -45,20 +47,17 @@ public class Adjuster {
             File selectedFile = chooser.getSelectedFile();
             try {
                 writer = new PrintWriter(selectedFile,"UTF-8");
+                writer.println(user.getName());
+                for (int i = 0; i < user.getCourseList().size(); i++) {
+                    writer.println(user.getCourseList().get(i).toString());
+                }
             } catch (FileNotFoundException | UnsupportedEncodingException e) {
                 e.printStackTrace();
+            } finally {
+                assert writer != null;
+                writer.close();
             }
         }
-
-        assert writer != null;
-        writer.println(user.getName());
-
-
-        for (int i = 0; i < user.getCourseList().size(); i++) {
-            writer.println(user.getCourseList().get(i).toString());
-        }
-
-        writer.close();
     }
 
     private static User setUpUser() {
@@ -230,18 +229,24 @@ public class Adjuster {
 
     }
 
+    private static final String ITEM_VAL_MSG = "What was the item worth(1 - 100 out of final grade)?";
+    private static final String ITEM_MAX_MSG = "What score constituted a 100 for the item?";
+    private static final String ITEM_SCR_MSG = "What score did you earn?";
+    private static final String ITEM_NME_MSG = "Give this item a name (like Test 1, Assignment 2, etc";
+
     private static Item getItem(Course course, boolean assignment) {
         Item item;
-        String itemName = JOptionPane.showInputDialog(null,
-                "Give this item a name (like Test 1, Assignment 2, etc");
+        String itemName = JOptionPane.showInputDialog(null, ITEM_NME_MSG);
         LocalDate itemDate = calendarDialogue();
-        double val = Double.parseDouble(JOptionPane.showInputDialog(null,
-                "What was the item worth(1 - 100 out of final grade)?"));
-        double max = Double.parseDouble(JOptionPane.showInputDialog(null,
-                "What score constituted a 100 for the item?"));
-        double score = Double.parseDouble(JOptionPane.showInputDialog(null,
-                "What score did you earn?"));
-        course.addGrades(score, max, val);
+        double val = Double.parseDouble(JOptionPane.showInputDialog(null, ITEM_VAL_MSG));
+        double max = Double.parseDouble(JOptionPane.showInputDialog(null, ITEM_MAX_MSG));
+        double score = Double.parseDouble(JOptionPane.showInputDialog(null, ITEM_SCR_MSG));
+        try {
+            course.addGrades(score, max, val);
+        } catch (GradeExceededException e) {
+            e.printStackTrace();
+        }
+
 
         if (assignment) {
             item = new Assignment(itemName, val, max, score, itemDate);

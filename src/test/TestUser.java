@@ -41,6 +41,58 @@ class TestUser {
     }
 
 
+    static class MidtermTest {
 
+        @BeforeEach
+        void setUp() {
+        }
 
+        @Test
+        void getTitle() {
+        }
+
+        @Test
+        void getValue() {
+        }
+
+        @Test
+        void getMaxScore() {
+        }
+
+        @Test
+        void getScoreEarned() {
+        }
+
+        @Test
+        void getDate() {
+        }
+
+        @Test
+        void setTitle() {
+        }
+
+        @Test
+        void setValue() {
+        }
+
+        @Test
+        void setMaxScore() {
+        }
+
+        @Test
+        void setScoreEarned() {
+        }
+
+        @Test
+        void setThoughtsFeelings() {
+        }
+
+        @Test
+        void setDate() {
+        }
+
+        @Test
+        void setReminder() {
+        }
+    }
 }
