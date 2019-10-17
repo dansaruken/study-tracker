@@ -1,13 +1,11 @@
-import application.Assignment;
-import application.Course;
-import application.Item;
-import application.Midterm;
+import application.*;
 import org.junit.jupiter.api.Test;
 //import org.junit.Test;
 
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class TestCourse {
 
@@ -49,6 +47,13 @@ class TestCourse {
         course2.addGrades(90, 100, 50);
         assertEquals(0.9, course2.getCurrentGrade());
         assertEquals(50, course2.getGradeRemaining());
+
+        try {
+            course2.addGrades(50,50,60);
+            fail();
+        } catch (GradeExceededException e){
+            System.out.println("Exception caught");
+        }
 
     }
 
