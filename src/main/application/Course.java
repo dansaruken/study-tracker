@@ -2,6 +2,7 @@ package application;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * CHANGELOG: Shifted "currentGrade" which was supposed to be a percentage (between 0 and 1), to "marksEarned",
@@ -99,6 +100,33 @@ public class Course {
     }
 
     public void addItem(Item item) {
-        testsAndAssignments.add(item);
+        if (!testsAndAssignments.contains(item)) {
+            testsAndAssignments.add(item);
+        } else {
+            System.out.println("this item has already been added to this course");
+        }
+        item.setCourse(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Course course = (Course) o;
+        return credits == course.credits
+                && Double.compare(course.hours, hours) == 0
+                && Double.compare(course.marksEarned, marksEarned) == 0
+                && Double.compare(course.gradeRemaining, gradeRemaining) == 0
+                && Objects.equals(courseName, course.courseName)
+                && Objects.equals(testsAndAssignments, course.testsAndAssignments);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(courseName, credits, hours, marksEarned, gradeRemaining, testsAndAssignments);
     }
 }

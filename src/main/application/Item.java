@@ -2,6 +2,7 @@ package application;
 
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public abstract class Item {
 
@@ -11,6 +12,7 @@ public abstract class Item {
     protected double scoreEarned = -1;
     protected String thoughtsFeelings;
     protected LocalDate date;
+    protected Course course;
 
     public String getTitle() {
         return title;
@@ -70,5 +72,34 @@ public abstract class Item {
 
     abstract void setReminder(int days);
 
+    public void setCourse(Course course) {
+        if (!(this.course == null) && !this.course.equals(course)) {
+            this.course = course;
+        } else {
+            System.out.println("This item is already assigned to this course.");
+        }
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Item item = (Item) o;
+        return Double.compare(item.value, value) == 0
+                && Double.compare(item.maxScore, maxScore) == 0
+                && Double.compare(item.scoreEarned, scoreEarned) == 0
+                && Objects.equals(title, item.title)
+                && Objects.equals(thoughtsFeelings, item.thoughtsFeelings)
+                && Objects.equals(date, item.date)
+                && Objects.equals(course, item.course);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, value, maxScore, scoreEarned, thoughtsFeelings, date, course);
+    }
 }
