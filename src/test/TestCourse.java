@@ -25,11 +25,17 @@ class TestCourse {
         assertEquals(0, otherCourse.getGradeRemaining());
         assertEquals(60,otherCourse.getHours());
         assertEquals(4, otherCourse.getCredits());
+
         Course cloneCourse = new Course("Software Construction", 4);
         assertFalse(otherCourse.equals(cloneCourse));
         cloneCourse = new Course("Software Construction", 4, 60, 90,0);
         assertTrue(cloneCourse.equals(otherCourse));
         assertFalse(cloneCourse.equals(null));
+
+        assertEquals(cloneCourse.hashCode(), otherCourse.hashCode());
+
+        Course badClone = new Course ("Models of Computation", 4, 0, 1,99);
+        assertFalse(badClone.equals(course));
     }
 
     @Test

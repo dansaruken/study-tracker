@@ -2,7 +2,9 @@ package application;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * CHANGELOG: Shifted "currentGrade" which was supposed to be a percentage (between 0 and 1), to "marksEarned",
@@ -16,7 +18,7 @@ public class Course {
     private double hours = 0;
     private double marksEarned = 0;
     private double gradeRemaining = 100;
-    private ArrayList<Item> testsAndAssignments = new ArrayList<>();
+    private Set<Item> testsAndAssignments = new HashSet<>();
 
     //EFFECTS: Creates new instance of a Course, with a default number of credits
     public Course(String title) {

@@ -94,9 +94,9 @@ public abstract class Item {
         return Double.compare(item.value, value) == 0
                 && Double.compare(item.maxScore, maxScore) == 0
                 && Double.compare(item.scoreEarned, scoreEarned) == 0
-                && Objects.equals(title, item.title)
                 && Objects.equals(thoughtsFeelings, item.thoughtsFeelings)
-                && Objects.equals(date, item.date);
+                && Objects.equals(date, item.date)
+                && Objects.equals(title, item.title);
     }
 
     @Override
