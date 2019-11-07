@@ -120,12 +120,11 @@ public class Course {
                 && Double.compare(course.hours, hours) == 0
                 && Double.compare(course.marksEarned, marksEarned) == 0
                 && Double.compare(course.gradeRemaining, gradeRemaining) == 0
-                && Objects.equals(courseName, course.courseName)
-                && Objects.equals(testsAndAssignments, course.testsAndAssignments);
+                && Objects.equals(courseName, course.courseName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(courseName, credits, hours, marksEarned, gradeRemaining, testsAndAssignments);
+        return Objects.hash(courseName, credits, hours, marksEarned, gradeRemaining);
     }
 }

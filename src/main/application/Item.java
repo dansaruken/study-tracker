@@ -96,12 +96,11 @@ public abstract class Item {
                 && Double.compare(item.scoreEarned, scoreEarned) == 0
                 && Objects.equals(title, item.title)
                 && Objects.equals(thoughtsFeelings, item.thoughtsFeelings)
-                && Objects.equals(date, item.date)
-                && Objects.equals(course, item.course);
+                && Objects.equals(date, item.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, value, maxScore, scoreEarned, thoughtsFeelings, date, course);
+        return Objects.hash(title, value, maxScore, scoreEarned, thoughtsFeelings, date);
     }
 }

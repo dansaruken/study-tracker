@@ -29,6 +29,7 @@ class TestCourse {
         assertFalse(otherCourse.equals(cloneCourse));
         cloneCourse = new Course("Software Construction", 4, 60, 90,0);
         assertTrue(cloneCourse.equals(otherCourse));
+        assertFalse(cloneCourse.equals(null));
     }
 
     @Test
