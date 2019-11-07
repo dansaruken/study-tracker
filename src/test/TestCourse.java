@@ -4,8 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TestCourse {
 
@@ -26,6 +25,10 @@ class TestCourse {
         assertEquals(0, otherCourse.getGradeRemaining());
         assertEquals(60,otherCourse.getHours());
         assertEquals(4, otherCourse.getCredits());
+        Course cloneCourse = new Course("Software Construction", 4);
+        assertFalse(otherCourse.equals(cloneCourse));
+        cloneCourse = new Course("Software Construction", 4, 60, 90,0);
+        assertTrue(cloneCourse.equals(otherCourse));
     }
 
     @Test

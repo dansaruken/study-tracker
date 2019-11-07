@@ -18,14 +18,12 @@ public class Course {
     private double gradeRemaining = 100;
     private ArrayList<Item> testsAndAssignments = new ArrayList<>();
 
-    //REQUIRES: title cannot contain spaces due to Scanner problems, hope to resolve.
     //EFFECTS: Creates new instance of a Course, with a default number of credits
     public Course(String title) {
         courseName = title;
         credits = 3;
     }
 
-    //REQUIRES: title cannot contain spaces due to Scanner problems, hope to resolve.
     //EFFECTS: Creates new instance of a Course
     public Course(String title, int credits) {
         courseName = title;
@@ -102,10 +100,11 @@ public class Course {
     public void addItem(Item item) {
         if (!testsAndAssignments.contains(item)) {
             testsAndAssignments.add(item);
+            item.setCourse(this);
         } else {
-            System.out.println("this item has already been added to this course");
+            System.out.println("");
         }
-        item.setCourse(this);
+
     }
 
     @Override

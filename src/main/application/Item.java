@@ -75,9 +75,11 @@ public abstract class Item {
     public void setCourse(Course course) {
         if (!(this.course == null) && !this.course.equals(course)) {
             this.course = course;
+            course.addItem(this);
         } else {
-            System.out.println("This item is already assigned to this course.");
+            System.out.println("");
         }
+
     }
 
     @Override

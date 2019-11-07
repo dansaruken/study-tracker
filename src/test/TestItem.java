@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestItem {
 
@@ -34,6 +35,9 @@ public class TestItem {
         assertEquals(10, assignment.getMaxScore());
         assertEquals(8, assignment.getScoreEarned());
         assertEquals(LocalDate.now(), assignment.getDate());
+        Midterm midClone = new Midterm("testOne", 20, 50, 25, LocalDate.now());
+        assertTrue(midClone.equals(midtermItem));
+        Assignment lameClone = new Assignment("assignmentOne", 60, 10, 8, LocalDate.now());
     }
 
     @Test
