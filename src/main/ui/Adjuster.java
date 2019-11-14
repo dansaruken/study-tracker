@@ -5,6 +5,7 @@ import application.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -12,6 +13,15 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 import static java.lang.System.exit;
 import static javax.swing.JOptionPane.NO_OPTION;
@@ -27,6 +37,14 @@ public class Adjuster {
      * @param args args
      */
     public static void main(String[] args) {
+
+        try {
+            JOptionPane.showMessageDialog(frameSetUp(), funFact(), "Today's Hot Tip",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         User user = setUpUser();
 
@@ -254,6 +272,37 @@ public class Adjuster {
             item = new Midterm(itemName, val, max, score, itemDate);
         }
         return item;
+    }
+
+
+    // Big thanks to https://api.adviceslip.com/
+    // Modified from given 210 resources
+    public static String funFact() throws IOException {
+
+        BufferedReader br = null;
+
+        try {
+            URL url = new URL("https://api.adviceslip.com/advice");
+            br = new BufferedReader(new InputStreamReader(url.openStream()));
+
+            String line;
+
+            StringBuilder sb = new StringBuilder();
+
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+                sb.append(System.lineSeparator());
+            }
+
+            return (new JSONObject(new JSONObject(sb.toString()).get("slip").toString())).get("advice").toString();
+
+        } catch (MalformedURLException | JSONException e) {
+            return "Fun fact: The fun fact URL is broken!";
+        } finally {
+            if (br != null) {
+                br.close();
+            }
+        }
     }
 
 

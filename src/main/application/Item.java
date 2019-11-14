@@ -3,6 +3,8 @@ package application;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Observable;
+import java.util.Observer;
 
 public abstract class Item {
 

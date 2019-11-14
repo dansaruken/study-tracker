@@ -1,10 +1,7 @@
 package application;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * CHANGELOG: Shifted "currentGrade" which was supposed to be a percentage (between 0 and 1), to "marksEarned",
@@ -129,4 +126,5 @@ public class Course {
     public int hashCode() {
         return Objects.hash(courseName, credits, hours, marksEarned, gradeRemaining);
     }
+
 }

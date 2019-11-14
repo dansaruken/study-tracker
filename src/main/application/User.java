@@ -1,8 +1,11 @@
 package application;
 
-import java.util.ArrayList;
+import observer.UserMonitor;
 
-public class User implements Writeable, Named {
+import java.util.ArrayList;
+import java.util.Observable;
+
+public class User extends Observable implements Writeable, Named {
     private static String name;
 
     private ArrayList<Course> courseList;
@@ -11,6 +14,7 @@ public class User implements Writeable, Named {
     public User(String name) {
         User.name = name;
         courseList = new ArrayList<>();
+        addObserver(new UserMonitor());
     }
 
     //EFFECTS: Returns username
@@ -25,12 +29,16 @@ public class User implements Writeable, Named {
 
     public void setCourseList(ArrayList<Course> courses) {
         courseList = courses;
+        setChanged();
+        notifyObservers(courses.get(courses.size() - 1));
     }
 
     //MODIFIES: this.
     //EFFECTS: Adds course to user's courseList
     public void addCourse(Course course) {
         courseList.add(course);
+        setChanged();
+        notifyObservers(course);
     }
 
     public String toString() {
