@@ -30,7 +30,7 @@ public class User extends Observable implements Writeable, Named {
     public void setCourseList(ArrayList<Course> courses) {
         courseList = courses;
         setChanged();
-        notifyObservers(courses.get(courses.size() - 1));
+        notifyObservers(courses.get(courses.size() - 1).getCourseName());
     }
 
     //MODIFIES: this.
@@ -38,7 +38,7 @@ public class User extends Observable implements Writeable, Named {
     public void addCourse(Course course) {
         courseList.add(course);
         setChanged();
-        notifyObservers(course);
+        notifyObservers(course.getCourseName());
     }
 
     public String toString() {

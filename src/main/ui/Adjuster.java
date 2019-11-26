@@ -46,13 +46,19 @@ public class Adjuster {
         }
 
 
-        User user = setUpUser();
 
-        user.setCourseList(addHoursAndGrades(user.getCourseList()));
+        //User user = setUpUser();
 
-        saveUserData(user);
+        //user.setCourseList(addHoursAndGrades(user.getCourseList()));
 
-        exit(0);
+        //saveUserData(user);
+
+        JFrame frame = frameSetUp();
+
+        frame.add(new UIPanel());
+        frame.setVisible(true);
+
+        //exit(0);
     }
 
     private static void saveUserData(User user) {
@@ -303,6 +309,67 @@ public class Adjuster {
                 br.close();
             }
         }
+    }
+
+    //https://stackoverflow.com/questions/5107629/how-to-redirect-console-content-to-a-textarea-in-java
+    private static class UIPanel extends JPanel {
+
+        User user;
+
+        UIPanel() {
+            JPanel organizer = new JPanel();
+            organizer.setLayout(new BorderLayout());
+
+            JPanel buttonPanel = new JPanel();
+            buttonPanel.setLayout(new GridBagLayout());
+
+            JButton newSemester = new JButton("New Semester");
+            newSemester.addActionListener((e) -> {
+                user = newUser();
+            });
+            buttonPanel.add(newSemester);
+
+            JButton loadData = new JButton("Load Data");
+            loadData.addActionListener((e) -> {
+                List<String> lines = linesSetup();
+                if (lines.size() == 0) {
+
+                    JOptionPane.showMessageDialog(null, "No user found! \nCreating new user.", "StudyTrack",
+                            JOptionPane.WARNING_MESSAGE);
+                    user = newUser();
+                } else {
+                    user = loadUserData(lines);
+                }
+            });
+            buttonPanel.add(loadData);
+
+            JButton saveData = new JButton("Save Data");
+            saveData.addActionListener((e) -> {
+                saveUserData(user);
+            });
+            buttonPanel.add(saveData);
+
+            JButton addGrades = new JButton("Add Hours and Grades");
+            addGrades.addActionListener((e -> {
+                addHoursAndGrades(user.getCourseList());
+            }));
+            buttonPanel.add(addGrades);
+
+            organizer.add(buttonPanel, BorderLayout.WEST);
+
+
+            JPanel display = new JPanel();
+            JTextArea output = new JTextArea(10, 10);
+            PrintStream printStream = new PrintStream(new CustomOutputStream(output));
+            System.setOut(printStream);
+            System.setErr(printStream);
+            display.add(output);
+
+            organizer.add(display, BorderLayout.EAST);
+
+            add(organizer);
+        }
+
     }
 
 

@@ -24,6 +24,9 @@ public class TestItem {
 
     @Test
     void testItems() {
+
+        System.out.println(assignment.hashCode());
+
         assertEquals("testOne", midtermItem.getTitle());
         assertEquals("assignmentOne", assignment.getTitle());
         assertEquals(20, midtermItem.getValue());
