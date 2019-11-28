@@ -1,6 +1,8 @@
 package application;
 
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 /**
@@ -67,8 +69,20 @@ public class Course {
     //EFFECTS: Adds hours studied into the course
     public void addHours(double hours) {
         this.hours += hours;
-        System.out.println(hours + " hours studying " + courseName + " today. "
-                + this.hours + " hours total this semester.");
+        System.out.print(hours + " hours studying " + courseName + " today. ");
+        //printData();
+    }
+
+    public void printData() {
+        System.out.println(courseName + ": " + hours + " hours studied this semester.");
+        if (gradeRemaining < 100) {
+            System.out.print("Current grade is " + round(marksEarned, 2) + " out of " + (100 - gradeRemaining));
+            System.out.print(" or " + round(100 * (marksEarned / (100.00 - gradeRemaining)), 2));
+            System.out.println("%");
+        } else {
+            System.out.println("No grades entered for this course yet.");
+        }
+
     }
 
     //REQUIRES: parameters must be positive, maxScore must not be zero. PercentMax must not be greater than
@@ -81,8 +95,7 @@ public class Course {
         if (gradeRemaining < 0) {
             throw new GradeExceededException();
         }
-        System.out.println("Current grade is " + marksEarned + " out of "
-                + (100 - gradeRemaining) + " or " + marksEarned / (100 - gradeRemaining));
+        printData();
     }
 
     //EFFECTS: Prints course name and credits
@@ -125,6 +138,16 @@ public class Course {
     @Override
     public int hashCode() {
         return Objects.hash(courseName, credits, hours, marksEarned, gradeRemaining);
+    }
+
+    // https://www.baeldung.com/java-round-decimal-number
+    // #4 Rounding Doubles with BigDecimal
+    private static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(Double.toString(value));
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
 }

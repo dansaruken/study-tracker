@@ -4,6 +4,8 @@ import application.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -29,7 +31,7 @@ import static javax.swing.JOptionPane.YES_OPTION;
 
 public class Adjuster {
 
-
+    static boolean saved = true;
 
     /**
      * Question: Does the main method have to follow 20-line maximum requirement?
@@ -135,9 +137,38 @@ public class Adjuster {
 
     private static JFrame frameSetUp() {
         JFrame frame = new JFrame();
-        frame.setSize(300, 400);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(new Dimension(736,414));
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.setTitle("StudyTracker");
+
+        // https://stackoverflow.com/questions/15449022/show-prompt-before-closing-jframe
+        // modified, but taken from above
+        frame.addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent we) {
+                closeWindow();
+            }
+        });
+
         return frame;
+
+
+    }
+
+    private static void closeWindow() {
+        String[] objButtons = {"Yes","No"};
+        if (!saved) {
+            int promptResult = JOptionPane.showOptionDialog(null,
+                    "You seem to have unsaved data. Are you sure you want to exit?", "StudyTracker",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                    objButtons,objButtons[1]);
+            if (promptResult == 0) {
+                System.exit(0);
+            }
+        } else {
+            System.exit(0);
+        }
     }
 
     //REQUIRES: User inputs have to be logical and error-free
@@ -314,6 +345,9 @@ public class Adjuster {
     //https://stackoverflow.com/questions/5107629/how-to-redirect-console-content-to-a-textarea-in-java
     private static class UIPanel extends JPanel {
 
+        private final JButton saveData = new JButton("Save Data");
+        private final JButton addGrades = new JButton("Add Grades");
+        private final JButton showData = new JButton("Show Data");
         User user;
 
         UIPanel() {
@@ -321,11 +355,15 @@ public class Adjuster {
             organizer.setLayout(new BorderLayout());
 
             JPanel buttonPanel = new JPanel();
-            buttonPanel.setLayout(new GridBagLayout());
+            buttonPanel.setLayout(new GridLayout(0,1));
 
             JButton newSemester = new JButton("New Semester");
             newSemester.addActionListener((e) -> {
                 user = newUser();
+                saveData.setEnabled(true);
+                addGrades.setEnabled(true);
+                showData.setEnabled(true);
+                saved = false;
             });
             buttonPanel.add(newSemester);
 
@@ -333,37 +371,57 @@ public class Adjuster {
             loadData.addActionListener((e) -> {
                 List<String> lines = linesSetup();
                 if (lines.size() == 0) {
-
                     JOptionPane.showMessageDialog(null, "No user found! \nCreating new user.", "StudyTrack",
                             JOptionPane.WARNING_MESSAGE);
                     user = newUser();
                 } else {
                     user = loadUserData(lines);
+                    System.out.println("User loaded. Hello, " + user.getName());
+                    saveData.setEnabled(true);
+                    addGrades.setEnabled(true);
+                    showData.setEnabled(true);
                 }
             });
             buttonPanel.add(loadData);
 
-            JButton saveData = new JButton("Save Data");
+            //JButton saveData = new JButton("Save Data");
             saveData.addActionListener((e) -> {
                 saveUserData(user);
+                System.out.println("Data saved!");
+                saved = true;
             });
             buttonPanel.add(saveData);
 
-            JButton addGrades = new JButton("Add Hours and Grades");
+            //JButton addGrades = new JButton("Add Hours and Grades");
             addGrades.addActionListener((e -> {
                 addHoursAndGrades(user.getCourseList());
+                saved = false;
+                System.out.println("You may wish to save your data now.");
             }));
             buttonPanel.add(addGrades);
+
+            //JButton showData = new JButton("Show data");
+            showData.addActionListener(e -> {
+                for (Course c : user.getCourseList()) {
+                    c.printData();
+                }
+            });
+            buttonPanel.add(showData);
+
+            saveData.setEnabled(false);
+            addGrades.setEnabled(false);
+            showData.setEnabled(false);
 
             organizer.add(buttonPanel, BorderLayout.WEST);
 
 
             JPanel display = new JPanel();
-            JTextArea output = new JTextArea(10, 10);
+            JTextArea output = new JTextArea(20, 60);
+            JScrollPane scrollPane = new JScrollPane(output);
             PrintStream printStream = new PrintStream(new CustomOutputStream(output));
             System.setOut(printStream);
             System.setErr(printStream);
-            display.add(output);
+            display.add(scrollPane);
 
             organizer.add(display, BorderLayout.EAST);
 
