@@ -59,7 +59,7 @@ public abstract class Item {
     }
      */
 
-    abstract void setReminder(int days);
+    //abstract void setReminder(int days);
 
     public void setCourse(Course course) {
         if (!(this.course == null) && !this.course.equals(course)) {
@@ -71,6 +71,7 @@ public abstract class Item {
 
     }
 
+    //EFFECTS: returns true if this and o are Items with all the same values
     @Override
     public boolean equals(Object o) {
         if (this == o) {

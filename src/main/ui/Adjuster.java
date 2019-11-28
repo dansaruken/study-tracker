@@ -68,6 +68,7 @@ public class Adjuster {
         //final String USER_FILE = ".data\\userInfo.txt";
 
         JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Choose where to save your file");
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 
             File selectedFile = chooser.getSelectedFile();
@@ -119,6 +120,7 @@ public class Adjuster {
         List<String> lines = new ArrayList<>();
 
         JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Load your course data");
 
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 
@@ -137,7 +139,7 @@ public class Adjuster {
 
     private static JFrame frameSetUp() {
         JFrame frame = new JFrame();
-        frame.setSize(new Dimension(736,414));
+        frame.setSize(new Dimension(768,432));
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setTitle("StudyTracker");
 
@@ -181,6 +183,7 @@ public class Adjuster {
         User user = new User(JOptionPane.showInputDialog(frame, "Hello! What's your name? "));
 
 
+
         // https://stackoverflow.com/questions/7080205/popup-message-boxes
         JOptionPane.showMessageDialog(frame, "Hello " + user.getName(), "StudyTrack",
                 JOptionPane.INFORMATION_MESSAGE);
@@ -191,7 +194,8 @@ public class Adjuster {
                 "StudyTrack", JOptionPane.QUESTION_MESSAGE, null, possibilities, 3);
 
         for (int i = 0; i < numCourses; i++) {
-            String courseName = JOptionPane.showInputDialog(frame, "What's the name of course #" + (i + 1) + "?");
+            String courseName = JOptionPane.showInputDialog(frame, "What's the name of course #" + (i + 1)
+                    + "? (NOTE: Do not enter colon character ':' in name or file cannot be saved)");
             Object[] possibleCredits = {1, 2, 3, 4, 5, 6};
             int credits = (int)JOptionPane.showInputDialog(frame, "How many credits is " + courseName + "?",
                     "StudyTrack", JOptionPane.QUESTION_MESSAGE, null, possibleCredits, 3);
@@ -360,6 +364,7 @@ public class Adjuster {
             JButton newSemester = new JButton("New Semester");
             newSemester.addActionListener((e) -> {
                 user = newUser();
+                System.out.println("Hello " + user.getName() + "! Welcome to StudyTrack.");
                 saveData.setEnabled(true);
                 addGrades.setEnabled(true);
                 showData.setEnabled(true);
@@ -374,6 +379,7 @@ public class Adjuster {
                     JOptionPane.showMessageDialog(null, "No user found! \nCreating new user.", "StudyTrack",
                             JOptionPane.WARNING_MESSAGE);
                     user = newUser();
+                    System.out.println("Hello " + user.getName() + "! Welcome to StudyTrack.");
                 } else {
                     user = loadUserData(lines);
                     System.out.println("User loaded. Hello, " + user.getName());
@@ -417,10 +423,12 @@ public class Adjuster {
 
             JPanel display = new JPanel();
             JTextArea output = new JTextArea(20, 60);
+            //output.set
+            output.setEditable(false);
             JScrollPane scrollPane = new JScrollPane(output);
             PrintStream printStream = new PrintStream(new CustomOutputStream(output));
             System.setOut(printStream);
-            System.setErr(printStream);
+            //System.setErr(printStream);
             display.add(scrollPane);
 
             organizer.add(display, BorderLayout.EAST);

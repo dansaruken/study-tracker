@@ -73,6 +73,7 @@ public class Course {
         //printData();
     }
 
+    //EFFECTS: Prints course data; how many hours have been input, and what the current grade is.
     public void printData() {
         System.out.println(courseName + ": " + hours + " hours studied this semester.");
         if (gradeRemaining < 100) {
@@ -105,20 +106,23 @@ public class Course {
     }
      */
 
+    //EFFECTS: Converts the credits, hours, and current grade of the course into a String formatted in such a way that
+    //         the adjuster class can save and load it.
+    //         As of this version of the program, Exams and Assignments cannot yet be saved.
     public String toString() {
         return courseName + ":" + credits  + ":" + hours  + ":" + marksEarned  + ":" + gradeRemaining;
     }
 
+    //MODIFIES: this
+    //EFFECTS: adds Item to Course, and adds Course to Item.
     public void addItem(Item item) {
         if (!testsAndAssignments.contains(item)) {
             testsAndAssignments.add(item);
             item.setCourse(this);
-        } else {
-            System.out.println("");
         }
-
     }
 
+    //EFFECTS: returns true if 'this' and 'o' are both Courses with the same name, number of credits, and marks earned.
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -131,7 +135,6 @@ public class Course {
         return credits == course.credits
                 && Double.compare(course.hours, hours) == 0
                 && Double.compare(course.marksEarned, marksEarned) == 0
-                && Double.compare(course.gradeRemaining, gradeRemaining) == 0
                 && Objects.equals(courseName, course.courseName);
     }
 

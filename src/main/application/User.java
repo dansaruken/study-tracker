@@ -41,6 +41,8 @@ public class User extends Observable implements Writeable, Named {
         notifyObservers(course.getCourseName());
     }
 
+    //EFFECTS: Converts user's name and course info into a String compatible with the Adjuster class' save and load
+    //         methods.
     public String toString() {
         StringBuilder s = new StringBuilder(name);
         for (Course c : courseList) {
