@@ -143,7 +143,9 @@ public class Course {
     // https://www.baeldung.com/java-round-decimal-number
     // #4 Rounding Doubles with BigDecimal
     private static double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
+        if (places < 0) {
+            throw new IllegalArgumentException();
+        }
 
         BigDecimal bd = new BigDecimal(Double.toString(value));
         bd = bd.setScale(places, RoundingMode.HALF_UP);
